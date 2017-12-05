@@ -1,0 +1,48 @@
+{
+  "extends": [
+    "airbnb",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "plugins": [
+    "react"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jasmine": true
+  },
+  "rules": {
+    "strict": 0,
+    "newline-before-return": 1,
+    "class-methods-use-this": 1,
+    "jsx-a11y/label-has-for": 0,
+    "react/jsx-filename-extension": 0,
+    "react/prefer-stateless-function": "warn",
+    "import/no-unresolved": "warn",
+    "jsx-a11y/anchor-is-valid": 0,
+    "func-names": [
+      "warn"
+    ],
+    "max-len": [
+      "error",
+      120,
+      {
+        "comments": 80
+      }
+    ],
+    "no-underscore-dangle": [
+      "warn"
+    ],
+  },
+  "globals": {
+    "addToHomescreen": false,
+    "fbq": false,
+    "_qevents": false
+  },
+  "settings": {
+    "import/ignore": ["node_modules", ".scss$", ".(svg|png)$", ".json$"]
+  }
+}

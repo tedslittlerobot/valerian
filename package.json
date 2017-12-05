@@ -1,0 +1,14 @@
+{
+  "name": "valerian",
+  "version": "0.0.0",
+  "description": "Basic Validation",
+  "main": "src/index.js",
+  "repository": "git@github.com:tedslittlerobot/valerian.git",
+  "author": "Stef Horner <stef@tedslittlerobot.com>",
+  "license": "MIT",
+  "files": [
+    "src",
+    "LICENSE",
+    "*.md"
+  ]
+}
