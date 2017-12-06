@@ -1,15 +1,17 @@
 import _ from 'lodash';
 
+import strings from './strings';
 import ValidationError from './ValidationError';
 
 export default class Validator {
-  constructor(data, rules) {
+  constructor(data = {}, rules = [], overrideStrings = {}) {
     this.rules = rules;
     this.initialData = data;
     this.data = {}; // will be a validated subset of initialData
     this.names = {};
     this.status = null;
     this.error = null;
+    this.strings = _.extend(strings(), overrideStrings);
 
     // Method Bindings
     this.setFieldNames = this.fieldNames.bind(this);
@@ -146,18 +148,18 @@ export default class Validator {
 
   /**
    * Construct an error message
+   *
    * @param  {Rule} rule
    * @param  {string} field
    * @param  {string} value
    * @return {string}
    */
   makeErrorMessage(rule, field, value) {
+    const str = this.strings[rule.error()] || rule.error();
     const name = this.guessFieldName(field);
     const replacements = { field, value, name };
-    _.assign(replacements, rule.replacements(field, this));
+    _.extend(replacements, rule.replacements(field, this));
 
-    const str = rule.error(); // @todo - should be a translation string
-
-    return _.reduce(replacements, (replacement, message, key) => message.replace(key, replacement), str);
+    return _.reduce(replacements, (replacement, message, key) => message.replace(`:${key}`, replacement), str);
   }
 }
