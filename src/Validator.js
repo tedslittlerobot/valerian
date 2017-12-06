@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+import ValidationError from './ValidationError';
+
 export default class Validator {
   constructor(data, rules) {
     this.rules = rules;
@@ -7,10 +9,10 @@ export default class Validator {
     this.data = {}; // will be a validated subset of initialData
     this.names = {};
     this.status = null;
-    this.errors = {};
+    this.error = null;
 
     // Method Bindings
-    this.fieldNames = this.fieldNames.bind(this);
+    this.setFieldNames = this.fieldNames.bind(this);
     this.getData = this.getData.bind(this);
     this.getInitialData = this.getInitialData.bind(this);
     this.passes = this.passes.bind(this);
@@ -22,13 +24,71 @@ export default class Validator {
     this.makeErrorMessage = this.makeErrorMessage.bind(this);
   }
 
+  // /////// VALIDATION /////// //
+
+  /**
+   * If the validation passes
+   * @return {bool}
+   */
+  passes() {
+    if (this.status === null) this.validate();
+
+    return this.status;
+  }
+
+  /**
+   * If the validation fails
+   * @return {bool}
+   */
+  fails() {
+    return !this.passes();
+  }
+
+  /**
+   * Run the validation. Throws an error if strict is set to true
+   *
+   * @param {bool} strict
+   * @return {Validator}
+   */
+  validate(strict = false) {
+    _.each(this.rules, this.validateField);
+
+    this.status = !!this.error;
+
+    if (strict && this.error) {
+      throw this.error;
+    }
+
+    return this;
+  }
+
+  /**
+   * Apply the given rules to a field
+   *
+   * @param  {array<Rule>} rules
+   * @param  {string} field
+   * @return {void}
+   */
+  validateField(rules, field) {
+    const value = this.getInitialData(field);
+    this.data[field] = value;
+
+    rules.forEach((rule) => {
+      if (rule.validate(value, field, this)) return;
+
+      this.addError(field, rule, value);
+    });
+  }
+
+  // /////// HELPERS /////// //
+
   /**
    * Assign the field names
    *
    * @param  {string} names
    * @return {Validator}
    */
-  fieldNames(names) {
+  setFieldNames(names) {
     this.names = names;
 
     return this;
@@ -55,53 +115,17 @@ export default class Validator {
   }
 
   /**
-   * If the validation passes
-   * @return {bool}
-   */
-  passes() {
-    if (this.status === null) this.validate();
-
-    return this.status;
-  }
-
-  /**
-   * If the validation fails
-   * @return {bool}
-   */
-  fails() {
-    return !this.passes();
-  }
-
-  /**
-   * Run the validation
+   * Guess a proper field name. Either finds it in the names map, or ucfirst's
+   * the field name
    *
-   * @return {Validator}
-   */
-  validate() {
-    _.each(this.rules, this.validateField);
-
-    this.status = this.errors.length === 0;
-
-    return this;
-  }
-
-  /**
-   * Apply the given rules to a field
-   *
-   * @param  {array<Rule>} rules
    * @param  {string} field
-   * @return {void}
+   * @return {string}
    */
-  validateField(rules, field) {
-    const value = this.getInitialData(field);
-    this.data[field] = value;
-
-    rules.forEach((rule) => {
-      if (rule.validate(value, field, this)) return;
-
-      this.addError(field, rule, value);
-    });
+  guessFieldName(field) {
+    return this.names[field] || (field.charAt(0).toUpperCase() + field.slice(1));
   }
+
+  // /////// ERRORS /////// //
 
   /**
    * Add an error message to the list
@@ -111,21 +135,11 @@ export default class Validator {
    * @param {mixed} value
    */
   addError(field, rule, value) {
-    if (!this.errors[field]) {
-      this.errors[field] = [];
+    if (!this.error) {
+      this.error = new ValidationError();
     }
 
-    this.errors[field].push(this.makeErrorMessage(rule, field, value));
-  }
-
-  /**
-   * Guess a proper field name
-   *
-   * @param  {string} field
-   * @return {string}
-   */
-  guessFieldName(field) {
-    return this.names[field] || field;
+    this.error.addMessage(field, this.makeErrorMessage(rule, field, value));
   }
 
   /**
