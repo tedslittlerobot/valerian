@@ -9,6 +9,12 @@ export default class Integer extends Numeric {
   }
 
   error() {
+    if (this.rangeMin !== null && this.rangeMax !== null) return 'integer/between';
+
+    if (this.rangeMin !== null) return 'integer/min';
+
+    if (this.rangeMax !== null) return 'integer/max';
+
     return 'integer';
   }
 

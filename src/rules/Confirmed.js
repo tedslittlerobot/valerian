@@ -1,5 +1,5 @@
 
-export default class Confirmation {
+export default class Confirmed {
   validate(value, field, validator) {
     const otherValue = validator.getData(`${field}_confirmation`);
 
@@ -7,7 +7,7 @@ export default class Confirmation {
   }
 
   error() {
-    return 'confirmation';
+    return 'confirmed';
   }
 
   replacements() {

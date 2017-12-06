@@ -1,5 +1,5 @@
 
-export default class String {
+export default class IsString {
   constructor() {
     this.rangeMin = 1;
     this.rangeMax = null;
@@ -52,13 +52,13 @@ export default class String {
   }
 
   error() {
-    if (this.rangeMin !== null && this.rangeMax !== null) return 'string/between';
+    if (this.rangeMin !== null && this.rangeMax !== null) return 'is_string/between';
 
-    if (this.rangeMin !== null) return 'string/min';
+    if (this.rangeMin !== null) return 'is_string/min';
 
-    if (this.rangeMax !== null) return 'string/max';
+    if (this.rangeMax !== null) return 'is_string/max';
 
-    return 'string';
+    return 'is_string';
   }
 
   replacements() {
