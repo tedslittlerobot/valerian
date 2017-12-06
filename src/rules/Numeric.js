@@ -42,6 +42,12 @@ export default class Numeric {
   }
 
   error() {
+    if (this.rangeMin !== null && this.rangeMax !== null) return 'numeric/between';
+
+    if (this.rangeMin !== null) return 'numeric/min';
+
+    if (this.rangeMax !== null) return 'numeric/max';
+
     return 'numeric';
   }
 

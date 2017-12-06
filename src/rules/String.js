@@ -41,6 +41,7 @@ export default class String {
   validate(value) {
     if (typeof value !== 'string') return false;
 
+    // eslint-disable-next-line prefer-destructuring
     const length = value.length;
 
     if (this.rangeMin !== null && length < this.rangeMin) return false;
@@ -51,6 +52,12 @@ export default class String {
   }
 
   error() {
+    if (this.rangeMin !== null && this.rangeMax !== null) return 'string/between';
+
+    if (this.rangeMin !== null) return 'string/min';
+
+    if (this.rangeMax !== null) return 'string/max';
+
     return 'string';
   }
 

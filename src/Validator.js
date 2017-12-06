@@ -65,6 +65,8 @@ export default class Validator {
   /**
    * Apply the given rules to a field
    *
+   * @todo - ignore non-"required" rules if empty
+   *
    * @param  {array<Rule>} rules
    * @param  {string} field
    * @return {void}
