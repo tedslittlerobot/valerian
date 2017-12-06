@@ -3,6 +3,14 @@ export default class String {
   constructor() {
     this.rangeMin = 1;
     this.rangeMax = null;
+
+    this.min = this.min.bind(this);
+    this.max = this.max.bind(this);
+    this.between = this.between.bind(this);
+    this.emptiable = this.emptiable.bind(this);
+    this.validate = this.validate.bind(this);
+    this.error = this.error.bind(this);
+    this.replacements = this.replacements.bind(this);
   }
 
   min(value) {
@@ -40,5 +48,13 @@ export default class String {
     if (this.rangeMax !== null && length > this.rangeMax) return false;
 
     return true;
+  }
+
+  error() {
+    return 'string';
+  }
+
+  replacements() {
+    return { min: this.rangeMin, max: this.rangeMax };
   }
 }
