@@ -10,5 +10,8 @@
     "src",
     "LICENSE",
     "*.md"
-  ]
+  ],
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
 }
