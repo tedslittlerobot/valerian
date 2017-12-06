@@ -1,9 +1,19 @@
 {
   "name": "valerian",
-  "version": "0.0.0",
-  "description": "Basic Validation",
+  "version": "0.1.0",
+  "description": "Easy Full Featured JS Validation Library.",
   "main": "src/index.js",
-  "repository": "git@github.com:tedslittlerobot/valerian.git",
+  "keywords": [
+    "javascript",
+    "validation",
+    "validate",
+    "validator",
+    "object",
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tedslittlerobot/valerian.git"
+  },
   "author": "Stef Horner <stef@tedslittlerobot.com>",
   "license": "MIT",
   "files": [
@@ -11,6 +21,10 @@
     "LICENSE",
     "*.md"
   ],
+  "bugs": {
+    "url": "https://github.com/tedslittlerobot/valerian/issues"
+  },
+  "homepage": "https://github.com/tedslittlerobot/valerian",
   "dependencies": {
     "lodash": "^4.17.4"
   }

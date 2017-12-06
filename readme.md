@@ -243,3 +243,7 @@ mergeStrings({monkey: ':name is not a monkey.'});
 
 new Validator({}, {monkey: [new IsMonkey()]});
 ```
+
+## Other
+
+This approach to validation is STRONGLY influenced by [Laravel's validation library for PHP](https://laravel.com/docs/5.5/validation).
