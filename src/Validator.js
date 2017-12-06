@@ -14,7 +14,7 @@ export default class Validator {
     this.strings = _.extend(strings(), overrideStrings);
 
     // Method Bindings
-    this.setFieldNames = this.fieldNames.bind(this);
+    this.setFieldNames = this.setFieldNames.bind(this);
     this.getData = this.getData.bind(this);
     this.getInitialData = this.getInitialData.bind(this);
     this.passes = this.passes.bind(this);
@@ -55,7 +55,7 @@ export default class Validator {
   validate(strict = false) {
     _.each(this.rules, this.validateField);
 
-    this.status = this.error.hasMessages();
+    this.status = !this.error.hasMessages();
 
     if (strict && this.error.hasMessages()) {
       throw this.error;
@@ -159,6 +159,13 @@ export default class Validator {
       (rule.replacements ? rule.replacements(field, this) : {}),
     );
 
-    return _.reduce(replacements, (replacement, message, key) => message.replace(`:${key}`, replacement), str);
+    console.warn(str);
+    console.warn('replacements', replacements);
+
+    return _.reduce(
+      replacements,
+      (message, replacement, key) => message.replace(`:${key}`, replacement),
+      str,
+    );
   }
 }

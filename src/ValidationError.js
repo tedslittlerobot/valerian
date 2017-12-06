@@ -10,8 +10,8 @@ export default class ValidationError extends Error {
     this.addMessage = this.addMessage.bind(this);
     this.hasMessage = this.hasMessage.bind(this);
     this.hasMessages = this.hasMessages.bind(this);
-    this.message = this.message.bind(this);
-    this.messages = this.messages.bind(this);
+    this.first = this.first.bind(this);
+    this.all = this.all.bind(this);
   }
 
   addMessage(key, message) {
@@ -32,13 +32,13 @@ export default class ValidationError extends Error {
     return this.hasMessage(key);
   }
 
-  message(key) {
+  first(key) {
     if (!this.errors[key]) return null;
 
     return this.errors[key][0];
   }
 
-  messages(key = null) {
+  all(key = null) {
     if (!key) return this.errors; // return all errors if no key is supplied
 
     if (!this.errors[key]) return null;

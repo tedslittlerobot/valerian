@@ -26,11 +26,11 @@ val.fails(); // true
 
 // 5. Show some error messages
 
-val.error.message('age') // 'The age field must be somewhere between 18 and 100.'
-val.error.message('name') // null
-val.error.messages('age') // ['The age field must be somewhere between 18 and 100.']
-val.error.messages('name') // null
-val.error.messages()
+val.error.first('age') // 'The age field must be somewhere between 18 and 100.'
+val.error.first('name') // null
+val.error.all('age') // ['The age field must be somewhere between 18 and 100.']
+val.error.all('name') // null
+val.error.all()
 // {
 //   age: ['The age field must be somewhere between 18 and 100.'],
 //   email: ['The email field must be a valid email address.'],
@@ -40,7 +40,7 @@ val.error.hasMessages('name') // false
 val.error.hasMessages('age') // true
 
 // To throw an exception:
-val.validate(true); // throws ValidationError - it has all the methods available to val.error (e.message('age'))
+val.validate(true); // throws ValidationError - it has all the methods available to val.error (e.first('age'))
 ```
 
 ## Rules
@@ -247,3 +247,5 @@ new Validator({}, {monkey: [new IsMonkey()]});
 ## Other
 
 This approach to validation is STRONGLY influenced by [Laravel's validation library for PHP](https://laravel.com/docs/5.5/validation).
+
+Tests are still to come!
