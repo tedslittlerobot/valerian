@@ -83,86 +83,84 @@ new IsString(); // defaults to .min(1)
 
 ### Email
 
+By default, uses the JS regex from http://emailregex.com/
+
 ```javascript
 import { Email } from 'valerian/rules';
 
 new Email();
-
-// uses the JS regex from http://emailregex.com/
 
 (new Email).useStrict(false); // do a weak email check - uses /\S+@\S+/
 ```
 
 ### Url
 
+Must be a valid URL. Very naive regex at the moment.
+
 ```javascript
 import { Url } from 'valerian/rules';
 
 new Url();
-
-// Must be a valid URL
 ```
 
 ### Matches
+
+This field must match the field passed in here. For example: `name: [new String(), new Matches('name_check')]` - the `name` and `name_check`  fields must match
 
 ```javascript
 import { Matches } from 'valerian/rules';
 
 new Matches('name');
-
-// This field must match the field passed in here. For example:
-// `name: [new String(), new Matches('name_check')]` - the name and name_check 
-// fields must match
 ```
 
 ### Confirmed
+
+The field must match a field with its own name with _confirmation appended. For example if you used it on, `password: [new Confirmed()]`, there must be a `password` and `password_confirmation` field, and they must match each other.
 
 ```javascript
 import { Confirmed } from 'valerian/rules';
 
 new Confirmed();
-
-// The field must match a field with its own name with _confirmation appended.
-// For example if you used it on, `password: [new Confirmed()]`, there must be a
-// password and password_confirmation field, and they must match each other.
 ```
 
 ### TypeOf
+
+Checks against the typeof operator
 
 ```javascript
 import { TypeOf } from 'valerian/rules';
 
 new TypeOf('string');
-
-// checks against the typeof operator
 ```
 
 ### InstanceOf
 
+You must provide a class to check against
+
 ```javascript
 import { InstanceOf } from 'valerian/rules';
 
-new InstanceOf(Date); // must provide a class to check against
+new InstanceOf(Date);
 ```
 
 ### IsDate
+
+Checks that it is a valid date with Date.parse()
 
 ```javascript
 import { IsDate } from 'valerian/rules';
 
 new IsDate();
-
-// Checks with Date.parse()
 ```
 
 ### OneOf
+
+Must be one of the supplied values
 
 ```javascript
 import { OneOf } from 'valerian/rules';
 
 new OneOf(['apple', 'banana']);
-
-// Must be one of the supplied values
 ```
 
 ### Required
