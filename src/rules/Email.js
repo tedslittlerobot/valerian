@@ -13,8 +13,8 @@ export default class Email {
     this.replacements = this.replacements.bind(this);
   }
 
-  strict() {
-    this.useStrict = true;
+  strict(strict = true) {
+    this.useStrict = strict;
   }
 
   validate(value) {

@@ -33,7 +33,7 @@ export default class IsString {
   }
 
   emptiable() {
-    this.rangeMin = 0;
+    this.rangeMin = null;
 
     return this;
   }

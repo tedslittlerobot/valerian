@@ -10,7 +10,7 @@ export default class Validator {
     this.data = {}; // will be a validated subset of initialData
     this.names = {};
     this.status = null;
-    this.error = null;
+    this.error = new ValidationError();
     this.strings = _.extend(strings(), overrideStrings);
 
     // Method Bindings
@@ -55,9 +55,9 @@ export default class Validator {
   validate(strict = false) {
     _.each(this.rules, this.validateField);
 
-    this.status = !!this.error;
+    this.status = this.error.hasMessages();
 
-    if (strict && this.error) {
+    if (strict && this.error.hasMessages()) {
       throw this.error;
     }
 
@@ -139,10 +139,6 @@ export default class Validator {
    * @param {mixed} value
    */
   addError(field, rule, value) {
-    if (!this.error) {
-      this.error = new ValidationError();
-    }
-
     this.error.addMessage(field, this.makeErrorMessage(rule, field, value));
   }
 
@@ -158,7 +154,10 @@ export default class Validator {
     const str = this.strings[rule.error()] || rule.error();
     const name = this.guessFieldName(field);
     const replacements = { field, value, name };
-    _.extend(replacements, rule.replacements(field, this));
+    _.extend(
+      replacements,
+      (rule.replacements ? rule.replacements(field, this) : {}),
+    );
 
     return _.reduce(replacements, (replacement, message, key) => message.replace(`:${key}`, replacement), str);
   }
