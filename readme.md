@@ -47,36 +47,15 @@ val.validate(true); // throws ValidationError - it has all the methods available
 
 The following rules are available
 
-### Confirmed
+### Numeric
 
 ```javascript
-import { Confirmed } from 'valerian/rules';
+import { Numeric } from 'valerian/rules';
 
-new Confirmed();
+new Numeric();
 
-// The field must match a field with its own name with _confirmation appended.
-// For example if you used it on, `password: [new Confirmed()]`, there must be a
-// password and password_confirmation field, and they must match each other.
-```
-
-### Email
-
-```javascript
-import { Email } from 'valerian/rules';
-
-new Email();
-
-// uses the JS regex from http://emailregex.com/
-
-(new Email).useStrict(false); // do a weak email check - uses /\S+@\S+/
-```
-
-### InstanceOf
-
-```javascript
-import { InstanceOf } from 'valerian/rules';
-
-new InstanceOf(Date); // must provide a class to check against
+(new Numeric()).min(1).max(5);
+(new Numeric()).between(1, 5);
 ```
 
 ### Integer
@@ -88,16 +67,6 @@ new Integer();
 
 (new Integer()).min(1).max(5);
 (new Integer()).between(1, 5);
-```
-
-### IsDate
-
-```javascript
-import { IsDate } from 'valerian/rules';
-
-new IsDate();
-
-// Checks with Date.parse()
 ```
 
 ### IsString
@@ -112,6 +81,28 @@ new IsString(); // defaults to .min(1)
 (new IsString()).emptiable(); // sets min length to null
 ```
 
+### Email
+
+```javascript
+import { Email } from 'valerian/rules';
+
+new Email();
+
+// uses the JS regex from http://emailregex.com/
+
+(new Email).useStrict(false); // do a weak email check - uses /\S+@\S+/
+```
+
+### Url
+
+```javascript
+import { Url } from 'valerian/rules';
+
+new Url();
+
+// Must be a valid URL
+```
+
 ### Matches
 
 ```javascript
@@ -124,15 +115,44 @@ new Matches('name');
 // fields must match
 ```
 
-### Numeric
+### Confirmed
 
 ```javascript
-import { Numeric } from 'valerian/rules';
+import { Confirmed } from 'valerian/rules';
 
-new Numeric();
+new Confirmed();
 
-(new Numeric()).min(1).max(5);
-(new Numeric()).between(1, 5);
+// The field must match a field with its own name with _confirmation appended.
+// For example if you used it on, `password: [new Confirmed()]`, there must be a
+// password and password_confirmation field, and they must match each other.
+```
+
+### TypeOf
+
+```javascript
+import { TypeOf } from 'valerian/rules';
+
+new TypeOf('string');
+
+// checks against the typeof operator
+```
+
+### InstanceOf
+
+```javascript
+import { InstanceOf } from 'valerian/rules';
+
+new InstanceOf(Date); // must provide a class to check against
+```
+
+### IsDate
+
+```javascript
+import { IsDate } from 'valerian/rules';
+
+new IsDate();
+
+// Checks with Date.parse()
 ```
 
 ### OneOf
@@ -167,26 +187,6 @@ new RequiredWith();
 import { RequiredWithout } from 'valerian/rules';
 
 new RequiredWithout();
-```
-
-### TypeOf
-
-```javascript
-import { TypeOf } from 'valerian/rules';
-
-new TypeOf('string');
-
-// checks against the typeof operator
-```
-
-### Url
-
-```javascript
-import { Url } from 'valerian/rules';
-
-new Url();
-
-// Must be a valid URL
 ```
 
 ## Using your own strings
