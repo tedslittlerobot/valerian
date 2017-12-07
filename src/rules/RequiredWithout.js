@@ -1,7 +1,7 @@
 
-import Rule from './Rule';
+import Required from './Required';
 
-export default class RequiredWithout {
+export default class RequiredWithout extends Required {
   constructor(other) {
     super();
 

@@ -2,6 +2,10 @@ import _ from 'lodash';
 
 import strings from './strings';
 import ValidationFailure from './ValidationFailure';
+import SkippingRule from './rules/SkippingRule';
+import Rule from './rules/Rule';
+import Required from './rules/Required';
+import Optional from './rules/Optional';
 
 export default class Validator {
   constructor(data = {}, rules = [], overrideStrings = {}) {
@@ -12,6 +16,7 @@ export default class Validator {
     this.status = null;
     this.error = new ValidationFailure();
     this.strings = _.extend(strings(), overrideStrings);
+    this.cachedOptional = new Optional(); // cached for implicit optional
 
     // Method Bindings
     this.setFieldNames = this.setFieldNames.bind(this);
@@ -20,6 +25,7 @@ export default class Validator {
     this.passes = this.passes.bind(this);
     this.fails = this.fails.bind(this);
     this.validate = this.validate.bind(this);
+    this.checkRules = this.checkRules.bind(this);
     this.validateField = this.validateField.bind(this);
     this.addError = this.addError.bind(this);
     this.guessFieldName = this.guessFieldName.bind(this);
@@ -65,6 +71,41 @@ export default class Validator {
   }
 
   /**
+   * Check the rule set
+   *
+   * @todo  - optimise this!
+   * @todo  - convert strings and arguments to available rules
+   *
+   * @param  {array<Rule>} rules
+   * @return {array<Rule>}
+   */
+  checkRules(rules) {
+    const has = { required: false, optional: true };
+
+    rules.forEach((rule) => {
+      // rules must be rules
+      if (!rule instanceof Rule) {
+        throw new Error(`The supplied rule must be an instance of [Rule]. [${rule.constructor.name}] given.`);
+      }
+
+      if (rule instanceof Required) {
+        has.required = true;
+      }
+
+      if (rule instanceof Optional) {
+        has.optional = true;
+      }
+    });
+
+    // a rule must have an optional or a required rule in it
+    if (!has.required && !has.optional) {
+      rules.unshift(this.cachedOptional);
+    }
+
+    return rules;
+  }
+
+  /**
    * Apply the given rules to a field
    *
    * @todo - ignore non-"required" rules if empty
@@ -77,8 +118,16 @@ export default class Validator {
     const value = this.getInitialData(field);
     this.data[field] = value;
 
-    rules.forEach((rule) => {
+    let shouldSkip = false;
+
+    this.checkRules(rules).forEach((rule) => {
+      if (shouldSkip) return;
+
       if (rule.validate(value, field, this)) return;
+
+      if (rule instanceof SkippingRule && rule.shouldSkipRemainingRules(value, field, this)) {
+        return shouldSkip = true;
+      }
 
       this.addError(field, rule, value);
     });
