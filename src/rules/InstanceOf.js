@@ -1,11 +1,11 @@
 
-export default class InstanceOf {
-  constructor(comparitor) {
-    this.comparitor = comparitor;
+import Rule from './Rule';
 
-    this.validate = this.validate.bind(this);
-    this.error = this.error.bind(this);
-    this.replacements = this.replacements.bind(this);
+export default class InstanceOf extends Rule {
+  constructor(comparitor) {
+    super();
+
+    this.comparitor = comparitor;
   }
 
   validate(value) {

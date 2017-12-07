@@ -153,14 +153,7 @@ export default class Validator {
   makeErrorMessage(rule, field, value) {
     const str = this.strings[rule.error()] || rule.error();
     const name = this.guessFieldName(field);
-    const replacements = { field, value, name };
-    _.extend(
-      replacements,
-      (rule.replacements ? rule.replacements(field, this) : {}),
-    );
-
-    console.warn(str);
-    console.warn('replacements', replacements);
+    const replacements = rule.allReplacements(field, value, name, this);
 
     return _.reduce(
       replacements,

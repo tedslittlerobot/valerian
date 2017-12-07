@@ -1,15 +1,16 @@
 
-export default class Numeric {
+import Rule from './Rule';
+
+export default class Numeric extends Rule {
   constructor() {
+    super();
+
     this.rangeMin = null;
     this.rangeMax = null;
 
     this.min = this.min.bind(this);
     this.max = this.max.bind(this);
     this.between = this.between.bind(this);
-    this.validate = this.validate.bind(this);
-    this.error = this.error.bind(this);
-    this.replacements = this.replacements.bind(this);
   }
 
   min(value) {

@@ -1,11 +1,11 @@
 
+import Rule from './Rule';
+
 export default class RequiredWithout {
   constructor(other) {
-    this.other = other;
+    super();
 
-    this.validate = this.validate.bind(this);
-    this.error = this.error.bind(this);
-    this.replacements = this.replacements.bind(this);
+    this.other = other;
   }
 
   validate(value, field, validator) {
