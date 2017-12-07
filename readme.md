@@ -26,11 +26,11 @@ val.fails(); // true
 
 // 5. Show some error messages
 
-val.error.message('age') // 'The age field must be somewhere between 18 and 100.'
-val.error.message('name') // null
-val.error.messages('age') // ['The age field must be somewhere between 18 and 100.']
-val.error.messages('name') // null
-val.error.messages()
+val.error.first('age') // 'The age field must be somewhere between 18 and 100.'
+val.error.first('name') // null
+val.error.all('age') // ['The age field must be somewhere between 18 and 100.']
+val.error.all('name') // null
+val.error.all()
 // {
 //   age: ['The age field must be somewhere between 18 and 100.'],
 //   email: ['The email field must be a valid email address.'],
@@ -40,43 +40,22 @@ val.error.hasMessages('name') // false
 val.error.hasMessages('age') // true
 
 // To throw an exception:
-val.validate(true); // throws ValidationError - it has all the methods available to val.error (e.message('age'))
+val.validate(true); // throws ValidationError - it has all the methods available to val.error (e.first('age'))
 ```
 
 ## Rules
 
 The following rules are available
 
-### Confirmed
+### Numeric
 
 ```javascript
-import { Confirmed } from 'valerian/rules';
+import { Numeric } from 'valerian/rules';
 
-new Confirmed();
+new Numeric();
 
-// The field must match a field with its own name with _confirmation appended.
-// For example if you used it on, `password: [new Confirmed()]`, there must be a
-// password and password_confirmation field, and they must match each other.
-```
-
-### Email
-
-```javascript
-import { Email } from 'valerian/rules';
-
-new Email();
-
-// uses the JS regex from http://emailregex.com/
-
-(new Email).useStrict(false); // do a weak email check - uses /\S+@\S+/
-```
-
-### InstanceOf
-
-```javascript
-import { InstanceOf } from 'valerian/rules';
-
-new InstanceOf(Date); // must provide a class to check against
+(new Numeric()).min(1).max(5);
+(new Numeric()).between(1, 5);
 ```
 
 ### Integer
@@ -88,16 +67,6 @@ new Integer();
 
 (new Integer()).min(1).max(5);
 (new Integer()).between(1, 5);
-```
-
-### IsDate
-
-```javascript
-import { IsDate } from 'valerian/rules';
-
-new IsDate();
-
-// Checks with Date.parse()
 ```
 
 ### IsString
@@ -112,37 +81,86 @@ new IsString(); // defaults to .min(1)
 (new IsString()).emptiable(); // sets min length to null
 ```
 
+### Email
+
+By default, uses the JS regex from http://emailregex.com/
+
+```javascript
+import { Email } from 'valerian/rules';
+
+new Email();
+
+(new Email).useStrict(false); // do a weak email check - uses /\S+@\S+/
+```
+
+### Url
+
+Must be a valid URL. Very naive regex at the moment.
+
+```javascript
+import { Url } from 'valerian/rules';
+
+new Url();
+```
+
 ### Matches
+
+This field must match the field passed in here. For example: `name: [new String(), new Matches('name_check')]` - the `name` and `name_check`  fields must match
 
 ```javascript
 import { Matches } from 'valerian/rules';
 
 new Matches('name');
-
-// This field must match the field passed in here. For example:
-// `name: [new String(), new Matches('name_check')]` - the name and name_check 
-// fields must match
 ```
 
-### Numeric
+### Confirmed
+
+The field must match a field with its own name with _confirmation appended. For example if you used it on, `password: [new Confirmed()]`, there must be a `password` and `password_confirmation` field, and they must match each other.
 
 ```javascript
-import { Numeric } from 'valerian/rules';
+import { Confirmed } from 'valerian/rules';
 
-new Numeric();
+new Confirmed();
+```
 
-(new Numeric()).min(1).max(5);
-(new Numeric()).between(1, 5);
+### TypeOf
+
+Checks against the typeof operator
+
+```javascript
+import { TypeOf } from 'valerian/rules';
+
+new TypeOf('string');
+```
+
+### InstanceOf
+
+You must provide a class to check against
+
+```javascript
+import { InstanceOf } from 'valerian/rules';
+
+new InstanceOf(Date);
+```
+
+### IsDate
+
+Checks that it is a valid date with Date.parse()
+
+```javascript
+import { IsDate } from 'valerian/rules';
+
+new IsDate();
 ```
 
 ### OneOf
+
+Must be one of the supplied values
 
 ```javascript
 import { OneOf } from 'valerian/rules';
 
 new OneOf(['apple', 'banana']);
-
-// Must be one of the supplied values
 ```
 
 ### Required
@@ -167,26 +185,6 @@ new RequiredWith();
 import { RequiredWithout } from 'valerian/rules';
 
 new RequiredWithout();
-```
-
-### TypeOf
-
-```javascript
-import { TypeOf } from 'valerian/rules';
-
-new TypeOf('string');
-
-// checks against the typeof operator
-```
-
-### Url
-
-```javascript
-import { Url } from 'valerian/rules';
-
-new Url();
-
-// Must be a valid URL
 ```
 
 ## Using your own strings
@@ -247,3 +245,5 @@ new Validator({}, {monkey: [new IsMonkey()]});
 ## Other
 
 This approach to validation is STRONGLY influenced by [Laravel's validation library for PHP](https://laravel.com/docs/5.5/validation).
+
+Tests are still to come!

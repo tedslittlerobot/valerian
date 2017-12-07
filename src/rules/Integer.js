@@ -1,4 +1,5 @@
 
+import Rule from './Rule';
 import Numeric from './Numeric';
 
 export default class Integer extends Numeric {
@@ -16,9 +17,5 @@ export default class Integer extends Numeric {
     if (this.rangeMax !== null) return 'integer/max';
 
     return 'integer';
-  }
-
-  replacements() {
-    return {};
   }
 }

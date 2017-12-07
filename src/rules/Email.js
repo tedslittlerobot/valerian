@@ -1,16 +1,16 @@
 
+import Rule from './Rule';
+
 // From http://emailregex.com/
 const strictRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const nonStrictRegex = /\S+@\S+/;
 
-export default class Email {
+export default class Email extends Rule {
   constructor() {
-    this.useStrict = true;
+    super();
 
+    this.useStrict = true;
     this.strict = this.strict.bind(this);
-    this.validate = this.validate.bind(this);
-    this.error = this.error.bind(this);
-    this.replacements = this.replacements.bind(this);
   }
 
   strict(strict = true) {
@@ -24,9 +24,5 @@ export default class Email {
 
   error() {
     return 'email';
-  }
-
-  replacements() {
-    return {};
   }
 }

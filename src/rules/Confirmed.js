@@ -1,5 +1,7 @@
 
-export default class Confirmed {
+import Rule from './Rule';
+
+export default class Confirmed extends Rule {
   validate(value, field, validator) {
     const otherValue = validator.getData(`${field}_confirmation`);
 
@@ -8,9 +10,5 @@ export default class Confirmed {
 
   error() {
     return 'confirmed';
-  }
-
-  replacements() {
-    return {};
   }
 }

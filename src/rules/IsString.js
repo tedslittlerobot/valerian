@@ -1,6 +1,10 @@
 
-export default class IsString {
+import Rule from './Rule';
+
+export default class IsString extends Rule {
   constructor() {
+    super();
+
     this.rangeMin = 1;
     this.rangeMax = null;
 
@@ -8,9 +12,6 @@ export default class IsString {
     this.max = this.max.bind(this);
     this.between = this.between.bind(this);
     this.emptiable = this.emptiable.bind(this);
-    this.validate = this.validate.bind(this);
-    this.error = this.error.bind(this);
-    this.replacements = this.replacements.bind(this);
   }
 
   min(value) {

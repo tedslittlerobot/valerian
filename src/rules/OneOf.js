@@ -1,11 +1,11 @@
 
-export default class OneOf {
-  constructor(items) {
-    this.items = items;
+import Rule from './Rule';
 
-    this.validate = this.validate.bind(this);
-    this.error = this.error.bind(this);
-    this.replacements = this.replacements.bind(this);
+export default class OneOf extends Rule {
+  constructor(items) {
+    super();
+
+    this.items = items;
   }
 
   validate(value) {
@@ -14,9 +14,5 @@ export default class OneOf {
 
   error() {
     return 'one_of';
-  }
-
-  replacements() {
-    return {};
   }
 }

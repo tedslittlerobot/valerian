@@ -1,11 +1,11 @@
 
-export default class RequiredWith {
-  constructor(other) {
-    this.other = other;
+import Required from './Required';
 
-    this.validate = this.validate.bind(this);
-    this.error = this.error.bind(this);
-    this.replacements = this.replacements.bind(this);
+export default class RequiredWith extends Required {
+  constructor(other) {
+    super();
+
+    this.other = other;
   }
 
   validate(value, field, validator) {

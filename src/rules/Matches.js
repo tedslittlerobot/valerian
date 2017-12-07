@@ -1,11 +1,11 @@
 
-export default class Matches {
-  constructor(other) {
-    this.other = other;
+import Rule from './Rule';
 
-    this.validate = this.validate.bind(this);
-    this.error = this.error.bind(this);
-    this.replacements = this.replacements.bind(this);
+export default class Matches extends Rule {
+  constructor(other) {
+    super();
+
+    this.other = other;
   }
 
   validate(value, field, validator) {
