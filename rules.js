@@ -8,9 +8,12 @@ import IsString from './src/rules/IsString';
 import Matches from './src/rules/Matches';
 import Numeric from './src/rules/Numeric';
 import OneOf from './src/rules/OneOf';
+import Optional from './src/rules/Optional';
 import Required from './src/rules/Required';
 import RequiredWith from './src/rules/RequiredWith';
 import RequiredWithout from './src/rules/RequiredWithout';
+import Rule from './src/rules/Rule';
+import SkippingRule from './src/rules/SkippingRule';
 import TypeOf from './src/rules/TypeOf';
 import Url from './src/rules/Url';
 
@@ -24,9 +27,12 @@ export {
   Matches,
   Numeric,
   OneOf,
+  Optional,
   Required,
   RequiredWith,
   RequiredWithout,
+  Rule,
+  SkippingRule,
   TypeOf,
   Url,
 };
