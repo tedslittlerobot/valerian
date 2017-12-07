@@ -1,11 +1,11 @@
 import _ from 'lodash';
 
-export default class ValidationError extends Error {
+export default class ValidationFailure extends Error {
   constructor() {
     super('There were Validation Errors');
 
     this.errors = {};
-    Error.captureStackTrace(this, ValidationError);
+    Error.captureStackTrace(this, ValidationFailure);
 
     this.addMessage = this.addMessage.bind(this);
     this.hasMessage = this.hasMessage.bind(this);

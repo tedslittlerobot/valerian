@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import strings from './strings';
-import ValidationError from './ValidationError';
+import ValidationFailure from './ValidationFailure';
 
 export default class Validator {
   constructor(data = {}, rules = [], overrideStrings = {}) {
@@ -10,7 +10,7 @@ export default class Validator {
     this.data = {}; // will be a validated subset of initialData
     this.names = {};
     this.status = null;
-    this.error = new ValidationError();
+    this.error = new ValidationFailure();
     this.strings = _.extend(strings(), overrideStrings);
 
     // Method Bindings
