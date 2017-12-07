@@ -19,6 +19,8 @@
   "license": "MIT",
   "files": [
     "src",
+    "rules.js",
+    "set-default-strings.js",
     "LICENSE",
     "*.md"
   ],
