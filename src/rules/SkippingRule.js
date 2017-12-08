@@ -2,7 +2,7 @@
 import Rule from './Rule';
 
 export default class SkippingRule extends Rule {
-  constrctor() {
+  constructor() {
     super();
 
     this.shouldSkipRemainingRules = this.shouldSkipRemainingRules.bind(this);

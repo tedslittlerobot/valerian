@@ -12,6 +12,6 @@ export default class Optional extends SkippingRule {
 
   shouldSkipRemainingRules(value, field, validator) {
     // return true if value is empty
-    return value === undefined && value === null;
+    return value === undefined || value === null;
   }
 }

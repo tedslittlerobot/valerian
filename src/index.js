@@ -1,7 +1,8 @@
 
 import strings, { setStrings, mergeStrings } from './strings';
 import Validator from './Validator';
-import ValidationError from './ValidationError';
+import ValidationFailure from './ValidationFailure';
+import Messages from './Messages';
 
 export default Validator;
-export { strings, setStrings, mergeStrings, ValidationError };
+export { strings, setStrings, mergeStrings, Messages, ValidationFailure };
