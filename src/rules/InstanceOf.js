@@ -17,6 +17,6 @@ export default class InstanceOf extends Rule {
   }
 
   replacements() {
-    return { class: this.comparitor.prototype.name };
+    return { class: this.comparitor.name };
   }
 }

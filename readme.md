@@ -143,14 +143,14 @@ import { InstanceOf } from 'valerian/rules';
 new InstanceOf(Date);
 ```
 
-### IsDate
+### IsDateString
 
 Checks that it is a valid date with Date.parse()
 
 ```javascript
-import { IsDate } from 'valerian/rules';
+import { IsDateString } from 'valerian/rules';
 
-new IsDate();
+new IsDateString();
 ```
 
 ### OneOf
@@ -161,6 +161,16 @@ Must be one of the supplied values
 import { OneOf } from 'valerian/rules';
 
 new OneOf(['apple', 'banana']);
+```
+
+### Optional
+
+Marks a field as optional. This gets added automatically if you don't have any "required" rules in a rule set.
+
+```javascript
+import { Optional } from 'valerian/rules';
+
+new Optional();
 ```
 
 ### Required
@@ -176,7 +186,7 @@ new Required();
 ```javascript
 import { RequiredWith } from 'valerian/rules';
 
-new RequiredWith();
+new RequiredWith('other_field');
 ```
 
 ### RequiredWithout
@@ -184,7 +194,7 @@ new RequiredWith();
 ```javascript
 import { RequiredWithout } from 'valerian/rules';
 
-new RequiredWithout();
+new RequiredWithout('other_field');
 ```
 
 ## Using your own strings
@@ -245,5 +255,3 @@ new Validator({}, {monkey: [new IsMonkey()]});
 ## Other
 
 This approach to validation is STRONGLY influenced by [Laravel's validation library for PHP](https://laravel.com/docs/5.5/validation).
-
-Tests are still to come!

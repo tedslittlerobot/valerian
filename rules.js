@@ -3,7 +3,7 @@ import Confirmed from './src/rules/Confirmed';
 import Email from './src/rules/Email';
 import InstanceOf from './src/rules/InstanceOf';
 import Integer from './src/rules/Integer';
-import IsDate from './src/rules/IsDate';
+import IsDateString from './src/rules/IsDateString';
 import IsString from './src/rules/IsString';
 import Matches from './src/rules/Matches';
 import Numeric from './src/rules/Numeric';
@@ -22,7 +22,7 @@ export {
   Email,
   InstanceOf,
   Integer,
-  IsDate,
+  IsDateString,
   IsString,
   Matches,
   Numeric,

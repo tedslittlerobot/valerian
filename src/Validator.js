@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 import strings from './strings';
+import Messages from './Messages';
 import ValidationFailure from './ValidationFailure';
 import SkippingRule from './rules/SkippingRule';
 import Rule from './rules/Rule';
@@ -14,7 +15,7 @@ export default class Validator {
     this.data = {}; // will be a validated subset of initialData
     this.names = {};
     this.status = null;
-    this.error = new ValidationFailure();
+    this.errors = new Messages();
     this.strings = _.extend(strings(), overrideStrings);
     this.cachedOptional = new Optional(); // cached for implicit optional
 
@@ -39,7 +40,9 @@ export default class Validator {
    * @return {bool}
    */
   passes() {
-    if (this.status === null) this.validate();
+    if (this.status === null) {
+      this.validate();
+    }
 
     return this.status;
   }
@@ -61,10 +64,10 @@ export default class Validator {
   validate(strict = false) {
     _.each(this.rules, this.validateField);
 
-    this.status = !this.error.hasMessages();
+    this.status = !this.errors.hasMessages();
 
-    if (strict && this.error.hasMessages()) {
-      throw this.error;
+    if (strict && this.errors.hasMessages()) {
+      throw new ValidationFailure(this.errors);
     }
 
     return this;
@@ -80,11 +83,13 @@ export default class Validator {
    * @return {array<Rule>}
    */
   checkRules(rules) {
-    const has = { required: false, optional: true };
+    const ruleset = Array.isArray(rules) ? rules : [rules];
 
-    rules.forEach((rule) => {
+    const has = { required: false, optional: false };
+
+    ruleset.forEach((rule) => {
       // rules must be rules
-      if (!rule instanceof Rule) {
+      if (!(rule instanceof Rule)) {
         throw new Error(`The supplied rule must be an instance of [Rule]. [${rule.constructor.name}] given.`);
       }
 
@@ -99,10 +104,10 @@ export default class Validator {
 
     // a rule must have an optional or a required rule in it
     if (!has.required && !has.optional) {
-      rules.unshift(this.cachedOptional);
+      ruleset.unshift(this.cachedOptional);
     }
 
-    return rules;
+    return ruleset;
   }
 
   /**
@@ -121,12 +126,19 @@ export default class Validator {
     let shouldSkip = false;
 
     this.checkRules(rules).forEach((rule) => {
-      if (shouldSkip) return;
+      if (shouldSkip) {
+        // if skipping has been set, skip
+        return;
+      }
 
-      if (rule.validate(value, field, this)) return;
-
-      if (rule instanceof SkippingRule && rule.shouldSkipRemainingRules(value, field, this)) {
+      if ((rule instanceof SkippingRule) && rule.shouldSkipRemainingRules(value, field, this)) {
+        // if it fails, but should skip, skip!
         return shouldSkip = true;
+      }
+
+      if (rule.validate(value, field, this)) {
+        // if it passes, ignore and keep going
+        return;
       }
 
       this.addError(field, rule, value);
@@ -153,7 +165,11 @@ export default class Validator {
    * @param  {key} field
    * @return {mixed}
    */
-  getData(field) {
+  getData(field = null) {
+    if (field === null) {
+      return this.data;
+    }
+
     return this.data[field];
   }
 
@@ -163,7 +179,11 @@ export default class Validator {
    * @param  {key} field
    * @return {mixed}
    */
-  getInitialData(field) {
+  getInitialData(field = null) {
+    if (field === null) {
+      return this.initialData;
+    }
+
     return this.initialData[field];
   }
 
@@ -188,7 +208,7 @@ export default class Validator {
    * @param {mixed} value
    */
   addError(field, rule, value) {
-    this.error.addMessage(field, this.makeErrorMessage(rule, field, value));
+    this.errors.addMessage(field, this.makeErrorMessage(rule, field, value));
   }
 
   /**
@@ -200,7 +220,7 @@ export default class Validator {
    * @return {string}
    */
   makeErrorMessage(rule, field, value) {
-    const str = this.strings[rule.error()] || rule.error();
+    const str = this.strings[rule.error(value, field, this)] || rule.error(value, field, this);
     const name = this.guessFieldName(field);
     const replacements = rule.allReplacements(field, value, name, this);
 

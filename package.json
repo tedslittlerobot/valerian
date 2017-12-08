@@ -1,6 +1,6 @@
 {
   "name": "valerian",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Easy Full Featured JS Validation Library.",
   "main": "src/index.js",
   "keywords": [
@@ -27,8 +27,18 @@
   "bugs": {
     "url": "https://github.com/tedslittlerobot/valerian/issues"
   },
+  "scripts": {
+    "test": "jest"
+  },
   "homepage": "https://github.com/tedslittlerobot/valerian",
   "dependencies": {
     "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^21.2.0",
+    "babel-preset-env": "^1.6.1",
+    "jest": "^21.2.1",
+    "regenerator-runtime": "^0.11.1"
   }
 }

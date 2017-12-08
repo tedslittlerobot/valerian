@@ -2,12 +2,18 @@ import _ from 'lodash';
 
 let strings = {};
 
-export function setStrings(newStrings) {
+const setStrings = (newStrings = {}) => {
   strings = newStrings;
-}
+};
 
-export function mergeStrings(newStrings) {
+const mergeStrings = (newStrings = {}) => {
   strings = _.extend(strings, newStrings);
-}
+};
 
-export default () => _.clone(strings);
+export { setStrings, mergeStrings };
+
+export default (key = null) => {
+  if (key === null) return _.clone(strings);
+
+  return strings[key] || key;
+};

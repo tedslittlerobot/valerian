@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 export default class Rule {
-  constrctor() {
+  constructor() {
     this.validate = this.validate.bind(this);
     this.error = this.error.bind(this);
     this.allReplacements = this.allReplacements.bind(this);
@@ -9,11 +9,11 @@ export default class Rule {
   }
 
   validate(value, field, validator) {
-    throw new Error(`Rule [${this.constrctor.name}] must override validate method`);
+    throw new Error(`Rule [${this.constructor.name}] must override validate method`);
   }
 
   error() {
-    throw new Error(`Rule [${this.constrctor.name}] must override error method`);
+    throw new Error(`Rule [${this.constructor.name}] must override error method`);
   }
 
   allReplacements(field, value, name, validator) {

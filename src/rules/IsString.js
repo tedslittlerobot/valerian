@@ -21,7 +21,7 @@ export default class IsString extends Rule {
   }
 
   max(value) {
-    this.rangeMin = value;
+    this.rangeMax = value;
 
     return this;
   }
@@ -45,19 +45,33 @@ export default class IsString extends Rule {
     // eslint-disable-next-line prefer-destructuring
     const length = value.length;
 
-    if (this.rangeMin !== null && length < this.rangeMin) return false;
+    if (this.rangeMin !== null && length < this.rangeMin) {
+      return false;
+    }
 
-    if (this.rangeMax !== null && length > this.rangeMax) return false;
+    if (this.rangeMax !== null && length > this.rangeMax) {
+      return false;
+    }
 
     return true;
   }
 
-  error() {
-    if (this.rangeMin !== null && this.rangeMax !== null) return 'is_string/between';
+  error(value) {
+    if (typeof value !== 'string') {
+      return 'is_string';
+    }
 
-    if (this.rangeMin !== null) return 'is_string/min';
+    if (this.rangeMin !== null && this.rangeMax !== null) {
+      return 'is_string/between';
+    }
 
-    if (this.rangeMax !== null) return 'is_string/max';
+    if (this.rangeMin !== null) {
+      return 'is_string/min';
+    }
+
+    if (this.rangeMax !== null) {
+      return 'is_string/max';
+    }
 
     return 'is_string';
   }
