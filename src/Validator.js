@@ -220,7 +220,7 @@ export default class Validator {
    * @return {string}
    */
   makeErrorMessage(rule, field, value) {
-    const str = this.strings[rule.error()] || rule.error();
+    const str = this.strings[rule.error(value, field, this)] || rule.error(value, field, this);
     const name = this.guessFieldName(field);
     const replacements = rule.allReplacements(field, value, name, this);
 
