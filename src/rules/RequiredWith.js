@@ -9,7 +9,9 @@ export default class RequiredWith extends Required {
   }
 
   validate(value, field, validator) {
-    const otherExists = validator.getData(this.other) !== undefined;
+    const otherData = validator.getData(this.other);
+
+    const otherExists = otherData !== undefined && otherData !== null;
 
     return otherExists ?
       (value !== undefined && value !== null) :

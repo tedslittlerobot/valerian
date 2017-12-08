@@ -9,6 +9,6 @@ export default class SkippingRule extends Rule {
   }
 
   shouldSkipRemainingRules(value, field, validator) {
-    throw new Error(`Rule [${this.constrctor.name}] must override shouldSkipRemainingRules method`);
+    throw new Error(`Rule [${this.constructor.name}] must override shouldSkipRemainingRules method`);
   }
 }

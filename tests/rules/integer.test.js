@@ -1,0 +1,24 @@
+
+import Integer from '../../src/rules/Integer';
+
+test('basic integer validation failure', () => {
+  const rule = new Integer;
+
+  expect(rule.validate('foo')).toBe(false);
+  expect(rule.validate(4.2)).toBe(false);
+  expect(rule.error()).toBe('integer');
+});
+
+test('integer validation passing', () => {
+  const rule = new Integer;
+
+  expect(rule.validate(42)).toBe(true);
+});
+
+test('integer error messages', () => {
+  const rule = new Integer;
+
+  expect(rule.min(1).error()).toBe('integer/min');
+  expect(rule.min(null).max(1).error()).toBe('integer/max');
+  expect(rule.between(1, 10).error()).toBe('integer/between');
+});

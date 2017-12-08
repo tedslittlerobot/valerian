@@ -20,7 +20,7 @@ export default class Numeric extends Rule {
   }
 
   max(value) {
-    this.rangeMin = value;
+    this.rangeMax = value;
 
     return this;
   }
@@ -33,21 +33,33 @@ export default class Numeric extends Rule {
   }
 
   validate(value) {
-    if (typeof value !== 'number') return false;
+    if (typeof value !== 'number') {
+      return false;
+    }
 
-    if (this.rangeMin !== null && value < this.rangeMin) return false;
+    if (this.rangeMin !== null && value < this.rangeMin) {
+      return false;
+    }
 
-    if (this.rangeMax !== null && value < this.rangeMax) return false;
+    if (this.rangeMax !== null && value > this.rangeMax) {
+      return false;
+    }
 
     return true;
   }
 
   error() {
-    if (this.rangeMin !== null && this.rangeMax !== null) return 'numeric/between';
+    if (this.rangeMin !== null && this.rangeMax !== null) {
+      return 'numeric/between';
+    }
 
-    if (this.rangeMin !== null) return 'numeric/min';
+    if (this.rangeMin !== null) {
+      return 'numeric/min';
+    }
 
-    if (this.rangeMax !== null) return 'numeric/max';
+    if (this.rangeMax !== null) {
+      return 'numeric/max';
+    }
 
     return 'numeric';
   }
