@@ -90,7 +90,6 @@ export default class Validator {
     ruleset.forEach((rule) => {
       // rules must be rules
       if (!(rule instanceof Rule)) {
-        console.info(rule);
         throw new Error(`The supplied rule must be an instance of [Rule]. [${rule.constructor.name}] given.`);
       }
 
