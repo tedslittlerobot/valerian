@@ -1,5 +1,6 @@
 import _ from 'lodash';
 
+import { factory } from './RuleFactory';
 import strings from './strings';
 import Messages from './Messages';
 import ValidationFailure from './ValidationFailure';
@@ -9,8 +10,8 @@ import Required from './rules/Required';
 import Optional from './rules/Optional';
 
 export default class Validator {
-  constructor(data = {}, rules = [], overrideStrings = {}) {
-    this.rules = rules;
+  constructor(data = {}, rules = {}, overrideStrings = {}) {
+    this.rules = this.parseRules(rules);
     this.initialData = data;
     this.data = {}; // will be a validated subset of initialData
     this.names = {};
@@ -146,6 +147,12 @@ export default class Validator {
   }
 
   // /////// HELPERS /////// //
+
+  parseRules(rules) {
+    return _.map(rules, (rules, field) => {
+      return rules.map(factory.make);
+    });
+  }
 
   /**
    * Assign the field names
