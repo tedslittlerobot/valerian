@@ -98,7 +98,7 @@ describe('validation ruleset checking', () => {
     const val = new Validator();
     const rule = new Required();
 
-    const result = val.checkRules(rule);
+    const result = val.checkRuleSet(rule);
 
     expect(result).toEqual([rule]);
     expect(result[0]).toBe(rule);
@@ -106,7 +106,7 @@ describe('validation ruleset checking', () => {
 
   test('validate optional rule is implicit', () => {
     const val = new Validator();
-    const result = val.checkRules([]);
+    const result = val.checkRuleSet([]);
 
     expect(result[0] instanceof Optional).toBe(true);
   });
@@ -114,7 +114,7 @@ describe('validation ruleset checking', () => {
   test('validate optional rule can be explicit', () => {
     const val = new Validator();
     const rule = new Optional();
-    const result = val.checkRules([rule]);
+    const result = val.checkRuleSet([rule]);
 
     expect(result).toEqual([rule]);
     expect(result[0]).toBe(rule);
@@ -123,7 +123,7 @@ describe('validation ruleset checking', () => {
   test('validate required does not add implicit optional rule', () => {
     const val = new Validator();
     const rule = new Required();
-    const result = val.checkRules([rule]);
+    const result = val.checkRuleSet([rule]);
 
     expect(result).toEqual([rule]);
     expect(result[0]).toBe(rule);
@@ -132,7 +132,7 @@ describe('validation ruleset checking', () => {
   test('validate only Rule classes are allowed', () => {
     const val = new Validator();
 
-    expect(() => val.checkRules(['monkeys'])).toThrow('The supplied rule must be an instance of [Rule]. [String] given.');
+    expect(() => val.checkRuleSet(['monkeys'])).toThrow('No registered rule factory for rule [monkeys].');
   });
 
 });

@@ -11,14 +11,14 @@ import Optional from './rules/Optional';
 
 export default class Validator {
   constructor(data = {}, rules = {}, overrideStrings = {}) {
-    this.rules = this.parseRules(rules);
+    this.cachedOptional = new Optional(); // cached for implicit optional
     this.initialData = data;
     this.data = {}; // will be a validated subset of initialData
     this.names = {};
     this.status = null;
     this.errors = new Messages();
     this.strings = _.extend(strings(), overrideStrings);
-    this.cachedOptional = new Optional(); // cached for implicit optional
+    this.rules = this.parseRules(rules);
 
     // Method Bindings
     this.setFieldNames = this.setFieldNames.bind(this);
@@ -27,7 +27,7 @@ export default class Validator {
     this.passes = this.passes.bind(this);
     this.fails = this.fails.bind(this);
     this.validate = this.validate.bind(this);
-    this.checkRules = this.checkRules.bind(this);
+    this.checkRuleSet = this.checkRuleSet.bind(this);
     this.validateField = this.validateField.bind(this);
     this.addError = this.addError.bind(this);
     this.guessFieldName = this.guessFieldName.bind(this);
@@ -75,43 +75,6 @@ export default class Validator {
   }
 
   /**
-   * Check the rule set
-   *
-   * @todo  - optimise this!
-   * @todo  - convert strings and arguments to available rules
-   *
-   * @param  {array<Rule>} rules
-   * @return {array<Rule>}
-   */
-  checkRules(rules) {
-    const ruleset = Array.isArray(rules) ? rules : [rules];
-
-    const has = { required: false, optional: false };
-
-    ruleset.forEach((rule) => {
-      // rules must be rules
-      if (!(rule instanceof Rule)) {
-        throw new Error(`The supplied rule must be an instance of [Rule]. [${rule.constructor.name}] given.`);
-      }
-
-      if (rule instanceof Required) {
-        has.required = true;
-      }
-
-      if (rule instanceof Optional) {
-        has.optional = true;
-      }
-    });
-
-    // a rule must have an optional or a required rule in it
-    if (!has.required && !has.optional) {
-      ruleset.unshift(this.cachedOptional);
-    }
-
-    return ruleset;
-  }
-
-  /**
    * Apply the given rules to a field
    *
    * @todo - ignore non-"required" rules if empty
@@ -126,7 +89,7 @@ export default class Validator {
 
     let shouldSkip = false;
 
-    this.checkRules(rules).forEach((rule) => {
+    rules.forEach((rule) => {
       if (shouldSkip) {
         // if skipping has been set, skip
         return;
@@ -148,10 +111,47 @@ export default class Validator {
 
   // /////// HELPERS /////// //
 
-  parseRules(rules) {
-    return _.map(rules, (rules, field) => {
-      return rules.map(factory.make);
+  parseRules(allRules) {
+    return _.mapValues(allRules, (rules) => this.checkRuleSet(rules));
+  }
+
+  /**
+   * Check the rule set
+   *
+   * @todo  - optimise this!
+   * @todo  - convert strings and arguments to available rules
+   *
+   * @param  {array<Rule>} rulesetToCheck
+   * @return {array<Rule>}
+   */
+  checkRuleSet(rulesetToCheck) {
+    // ensure it is an array
+    let ruleset = (!Array.isArray(rulesetToCheck) ? [rulesetToCheck] : rulesetToCheck)
+      .map(factory.make);
+
+    const has = { required: false, optional: false };
+    ruleset.forEach((rule) => {
+      // rules must be rules
+      if (!(rule instanceof Rule)) {
+        throw new Error(`The supplied rule must be an instance of [Rule]. [${rule.constructor.name}] given.`);
+      }
+
+      if (rule instanceof Required) {
+        has.required = true;
+      }
+
+      if (rule instanceof Optional) {
+        has.optional = true;
+      }
     });
+
+    // a rule must have an optional or a required rule in it
+    if (!has.required && !has.optional) {
+      ruleset.unshift(this.cachedOptional);
+    }
+
+
+    return ruleset;
   }
 
   /**

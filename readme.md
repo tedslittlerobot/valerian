@@ -3,7 +3,8 @@
 ## Usage
 
 ```javascript
-import 'valerian/set-default-strings'; // only needs to be done once to setup the error messages
+import 'valerian/bootstrap'; // must be done once
+
 import { Email, Integer, IsString } from 'valerian/rules';
 import Validator from 'valerian';
 
@@ -200,8 +201,7 @@ new RequiredWithout('other_field');
 ## Using your own strings
 
 ```javascript
-// Optional: This bootstraps the strings with a default set.
-import 'valerian/set-default-strings';
+import 'valerian/bootstrap';
 
 import { setStrings, mergeStrings } from 'valerian';
 

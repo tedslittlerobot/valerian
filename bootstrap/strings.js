@@ -1,5 +1,5 @@
 
-import { setStrings } from './src/strings';
+import { setStrings } from '../src/strings';
 
 setStrings({
   confirmed: 'The :name field must be confirmed.',

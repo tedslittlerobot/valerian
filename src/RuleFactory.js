@@ -1,5 +1,5 @@
 
-import Rule from '../rules/Rule';
+import Rule from './rules/Rule';
 
 export default class RuleFactory {
   constructor() {
@@ -52,7 +52,7 @@ export default class RuleFactory {
     const factory = this.factories[key];
 
     if (!factory) {
-      throw new Error(`No registered rule factory for rule [${key}]`);
+      throw new Error(`No registered rule factory for rule [${key}].`);
     }
 
     // run it and cache
