@@ -1,9 +1,13 @@
 
 import {
   Confirmed,
+  Email,
   InstanceOf,
+  Integer,
   IsDateString,
+  IsString,
   Matches,
+  Numeric,
   OneOf,
   Optional,
   Required,
@@ -15,23 +19,60 @@ import {
 
 import { factory } from '../src/RuleFactory';
 
-// The easy ones
-factory.extend('confirmed', () => new Confirmed());
-factory.extend('is_date_string', () => new IsDateString());
-factory.extend('optional', () => new Optional());
-factory.extend('required', () => new Required());
-factory.extend('url', () => new Url());
+factory
+  // Rules with no arguments
+  .extend('confirmed', () => new Confirmed())
+  .extend('is_date_string', () => new IsDateString())
+  .extend('optional', () => new Optional())
+  .extend('required', () => new Required())
+  .extend('url', () => new Url())
+  // Rules with arguments
+  .extend('instance_of', arg => new InstanceOf(arg))
+  .extend('matches', arg => new Matches(arg))
+  .extend('one_of', (arg = '') => new OneOf(arg.split(',')))
+  .extend('required_with', arg => new RequiredWith(arg))
+  .extend('required_without', arg => new RequiredWithout(arg))
+  .extend('type_of', arg => new TypeOf(arg));
 
-// The less easy ones
-factory.extend('instance_of', (arg) => new InstanceOf(arg));
-factory.extend('matches', (arg) => new Matches(arg));
-factory.extend('one_of', (arg = '') => new OneOf(arg.split(',')));
-factory.extend('required_with', (arg) => new RequiredWith(arg));
-factory.extend('required_without', (arg) => new RequiredWithout(arg));
-factory.extend('type_of', (arg) => new TypeOf(arg));
+// Rules with options
+factory.extend('email', (flag) => {
+  const rule = new Email();
 
-// @todo - The harder ones
-// email
-// integer
-// is_string
-// numeric
+  if (flag) {
+    rule.strict(flag.includes('no'));
+  }
+
+  return rule;
+});
+
+factory.extend('integer', (flag) => {
+  const rule = new Integer();
+
+  // @todo - add options for min, max, between
+
+  return rule;
+});
+
+factory.extend('is_string', (flag) => {
+  const rule = new IsString();
+
+  // @todo - add options for min, max, between
+
+  return rule;
+});
+
+factory.extend('numeric', (flag) => {
+  const rule = new Numeric();
+
+  // @todo - add options for min, max, between
+
+  return rule;
+});
+
+// Aliases
+
+factory
+  .alias('date_string', 'is_date_string')
+  .alias('in', 'one_of')
+  .alias('int', 'integer')
+  .alias('string', 'is_string');

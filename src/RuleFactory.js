@@ -58,6 +58,27 @@ export default class RuleFactory {
     // run it and cache
     return this.cache[symbol] = factory(...tokens);
   }
+
+  /**
+   * Alias a factory to another one.
+   *
+   * For example, to alias needed to requried
+   *
+   * factory.extend('required', () => new Required).alias('needed', 'required');
+   *
+   * @param  {string} newKey
+   * @param  {string} aliasKey
+   * @return {RuleFactory}
+   */
+  alias(newKey, aliasKey) {
+    if (!this.factories[aliasKey]) {
+      throw new Error(`There is no factory [${aliasKey}] to alias [${newKey}] to.`);
+    }
+
+    this.factories[newKey] = this.factories[aliasKey];
+
+    return this;
+  }
 }
 
 const factory = new RuleFactory();
