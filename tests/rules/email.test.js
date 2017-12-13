@@ -1,4 +1,6 @@
 
+import '../../bootstrap';
+import { factory } from '../../src/RuleFactory';
 import Email from '../../src/rules/Email';
 
 test('basic email validation failure', () => {
@@ -25,4 +27,16 @@ test('simple email validation passing', () => {
   rule.strict(false);
 
   expect(rule.validate('foo@bar')).toBe(true);
+});
+
+test('string construction', () => {
+  const rule = factory.make('email');
+
+  expect(rule instanceof Email).toBeTruthy();
+});
+
+test('string construction arguments', () => {
+  expect(factory.make('email').useStrict).toBeTruthy();
+  expect(factory.make('email:not-strict').useStrict).toBeFalsy();
+  expect(factory.make('email:strict').useStrict).toBeTruthy();
 });

@@ -1,4 +1,6 @@
 
+import '../../bootstrap';
+import { factory } from '../../src/RuleFactory';
 import Integer from '../../src/rules/Integer';
 
 test('basic integer validation failure', () => {
@@ -21,4 +23,12 @@ test('integer error messages', () => {
   expect(rule.min(1).error()).toBe('integer/min');
   expect(rule.min(null).max(1).error()).toBe('integer/max');
   expect(rule.between(1, 10).error()).toBe('integer/between');
+});
+
+test('string construction', () => {
+  const rule = factory.make('integer');
+  const alias = factory.make('int');
+
+  expect(rule instanceof Integer).toBeTruthy();
+  expect(alias instanceof Integer).toBeTruthy();
 });

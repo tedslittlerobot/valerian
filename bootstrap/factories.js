@@ -27,19 +27,49 @@ factory
   .extend('required', () => new Required())
   .extend('url', () => new Url())
   // Rules with arguments
-  .extend('instance_of', arg => new InstanceOf(arg))
-  .extend('matches', arg => new Matches(arg))
-  .extend('one_of', (arg = '') => new OneOf(arg.split(',')))
-  .extend('required_with', arg => new RequiredWith(arg))
-  .extend('required_without', arg => new RequiredWithout(arg))
-  .extend('type_of', arg => new TypeOf(arg));
+  .extend('instance_of', arg => {
+    if (arg === undefined) {
+      throw new Error('Rule [instance_of] requires an argument.');
+    }
+    return new InstanceOf(arg);
+  })
+  .extend('matches', arg => {
+    if (arg === undefined) {
+      throw new Error('Rule [matches] requires an argument.');
+    }
+    return new Matches(arg);
+  })
+  .extend('one_of', arg => {
+    if (arg === undefined) {
+      throw new Error('Rule [one_of] requires an argument.');
+    }
+    return new OneOf(arg.split(','));
+  })
+  .extend('required_with', arg => {
+    if (arg === undefined) {
+      throw new Error('Rule [required_with] requires an argument.');
+    }
+    return new RequiredWith(arg);
+  })
+  .extend('required_without', arg => {
+    if (arg === undefined) {
+      throw new Error('Rule [required_without] requires an argument.');
+    }
+    return new RequiredWithout(arg);
+  })
+  .extend('type_of', arg => {
+    if (arg === undefined) {
+      throw new Error('Rule [type_of] requires an argument.');
+    }
+    return new TypeOf(arg);
+  });
 
 // Rules with options
 factory.extend('email', (flag) => {
   const rule = new Email();
 
   if (flag) {
-    rule.strict(flag.includes('no'));
+    rule.strict(!flag.includes('no'));
   }
 
   return rule;
@@ -75,4 +105,5 @@ factory
   .alias('date_string', 'is_date_string')
   .alias('in', 'one_of')
   .alias('int', 'integer')
+  .alias('number', 'numeric')
   .alias('string', 'is_string');

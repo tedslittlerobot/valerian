@@ -1,4 +1,6 @@
 
+import '../../bootstrap';
+import { factory } from '../../src/RuleFactory';
 import Required from '../../src/rules/Required';
 
 test('basic required validation failure', () => {
@@ -22,4 +24,10 @@ test('required validation passing with falsy but existant values', () => {
   expect(rule.validate('')).toBe(true);
   expect(rule.validate(0)).toBe(true);
   expect(rule.validate(false)).toBe(true);
+});
+
+test('string construction', () => {
+  const rule = factory.make('required');
+
+  expect(rule instanceof Required).toBeTruthy();
 });

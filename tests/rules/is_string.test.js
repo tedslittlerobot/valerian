@@ -1,4 +1,6 @@
 
+import '../../bootstrap';
+import { factory } from '../../src/RuleFactory';
 import IsString from '../../src/rules/IsString';
 
 test('basic string validation', () => {
@@ -62,4 +64,12 @@ test('test impossible situation for code coverage', () => {
   // get the error of a string that passes
 
   expect(rule.error('foobar')).toBe('is_string');
+});
+
+test('string construction', () => {
+  const rule = factory.make('is_string');
+  const alias = factory.make('string');
+
+  expect(rule instanceof IsString).toBeTruthy();
+  expect(alias instanceof IsString).toBeTruthy();
 });

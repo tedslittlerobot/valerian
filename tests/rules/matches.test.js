@@ -1,4 +1,6 @@
 
+import '../../bootstrap';
+import { factory } from '../../src/RuleFactory';
 import Matches from '../../src/rules/Matches';
 
 test('basic matches validation failure', () => {
@@ -42,4 +44,15 @@ test('basic matches validation replacements', () => {
   };
 
   expect(rule.replacements('foo', validator)).toEqual({ other: 'Bar' });
+});
+
+test('string construction', () => {
+  const rule = factory.make('matches:foo');
+
+  expect(rule instanceof Matches).toBeTruthy();
+  expect(rule.other).toBe('foo');
+});
+
+test('string construction required arguments', () => {
+  expect(() => factory.make('matches')).toThrow('Rule [matches] requires an argument.');
 });

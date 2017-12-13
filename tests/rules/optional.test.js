@@ -1,4 +1,6 @@
 
+import '../../bootstrap';
+import { factory } from '../../src/RuleFactory';
 import Optional from '../../src/rules/Optional';
 
 test('test validate is true', () => {
@@ -34,4 +36,10 @@ test('test skip rule check with empty values', () => {
   expect(rule.shouldSkipRemainingRules(null)).toBe(true);
   expect(rule.shouldSkipRemainingRules(undefined)).toBe(true);
   expect(rule.shouldSkipRemainingRules()).toBe(true);
+});
+
+test('string construction', () => {
+  const rule = factory.make('optional');
+
+  expect(rule instanceof Optional).toBeTruthy();
 });

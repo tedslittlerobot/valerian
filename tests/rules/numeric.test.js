@@ -1,4 +1,6 @@
 
+import '../../bootstrap';
+import { factory } from '../../src/RuleFactory';
 import Numeric from '../../src/rules/Numeric';
 
 test('basic numeric validation failure', () => {
@@ -40,4 +42,12 @@ test('numeric replacements', () => {
   const rule = new Numeric;
 
   expect(rule.between(1, 42).replacements()).toEqual({ min: 1, max: 42 });
+});
+
+test('string construction', () => {
+  const rule = factory.make('numeric');
+  const alias = factory.make('number');
+
+  expect(rule instanceof Numeric).toBeTruthy();
+  expect(alias instanceof Numeric).toBeTruthy();
 });
