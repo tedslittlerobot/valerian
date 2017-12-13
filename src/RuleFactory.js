@@ -71,11 +71,13 @@ export default class RuleFactory {
    * @return {RuleFactory}
    */
   alias(newKey, aliasKey) {
-    if (!this.factories[aliasKey]) {
+    const factory = this.factories[aliasKey];
+
+    if (!factory) {
       throw new Error(`There is no factory [${aliasKey}] to alias [${newKey}] to.`);
     }
 
-    this.factories[newKey] = this.factories[aliasKey];
+    this.factories[newKey] = factory;
 
     return this;
   }
