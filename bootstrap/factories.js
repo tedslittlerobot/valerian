@@ -39,11 +39,12 @@ factory
     }
     return new Matches(arg);
   })
-  .extend('one_of', arg => {
-    if (arg === undefined) {
+  .extend('one_of', list => {
+    if (list === undefined) {
       throw new Error('Rule [one_of] requires an argument.');
     }
-    return new OneOf(arg.split(','));
+
+    return new OneOf(list);
   })
   .extend('required_with', arg => {
     if (arg === undefined) {
@@ -75,26 +76,56 @@ factory.extend('email', (flag) => {
   return rule;
 });
 
-factory.extend('integer', (flag) => {
+factory.extend('integer', (options = {}) => {
   const rule = new Integer();
 
-  // @todo - add options for min, max, between
+  if (options.min) {
+    rule.min(options.min);
+  }
+
+  if (options.max) {
+    rule.max(options.max);
+  }
+
+  if (options.between) {
+    rule.between(...options.between.split('-'));
+  }
 
   return rule;
 });
 
-factory.extend('is_string', (flag) => {
+factory.extend('is_string', (options = {}) => {
   const rule = new IsString();
 
-  // @todo - add options for min, max, between
+  if (options.min) {
+    rule.min(options.min);
+  }
+
+  if (options.max) {
+    rule.max(options.max);
+  }
+
+  if (options.between) {
+    rule.between(...options.between.split('-'));
+  }
 
   return rule;
 });
 
-factory.extend('numeric', (flag) => {
+factory.extend('numeric', (options = {}) => {
   const rule = new Numeric();
 
-  // @todo - add options for min, max, between
+  if (options.min) {
+    rule.min(options.min);
+  }
+
+  if (options.max) {
+    rule.max(options.max);
+  }
+
+  if (options.between) {
+    rule.between(...options.between.split('-'));
+  }
 
   return rule;
 });

@@ -73,3 +73,24 @@ test('string construction', () => {
   expect(rule instanceof IsString).toBeTruthy();
   expect(alias instanceof IsString).toBeTruthy();
 });
+
+test('string construction min', () => {
+  const rule = factory.make('string|min:3');
+
+  expect(rule.rangeMin).toEqual(3);
+  expect(rule.rangeMax).toBe(null);
+});
+
+test('string construction max', () => {
+  const rule = factory.make('string|max:3');
+
+  expect(rule.rangeMin).toBe(1);
+  expect(rule.rangeMax).toEqual(3);
+});
+
+test('string construction between', () => {
+  const rule = factory.make('string|between:3-4');
+
+  expect(rule.rangeMin).toEqual(3);
+  expect(rule.rangeMax).toEqual(4);
+});

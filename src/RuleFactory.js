@@ -1,4 +1,6 @@
 
+import _ from 'lodash';
+
 import Rule from './rules/Rule';
 
 export default class RuleFactory {
@@ -45,8 +47,12 @@ export default class RuleFactory {
     }
 
     // parse the basic key and parameters
-    const tokens = symbol.split(':');
+    let tokens = symbol.split('|');
+    // get the rule key
     const key = tokens.shift();
+    tokens = tokens
+      // if a parameter has a comma in it, convert it to a list / array
+      .map(this.parseArgument);
 
     // get the factory
     const factory = this.factories[key];
@@ -57,6 +63,29 @@ export default class RuleFactory {
 
     // run it and cache
     return this.cache[symbol] = factory(...tokens);
+  }
+
+  /**
+   * Parse an individual argument
+   *
+   * @param  {string} arg
+   * @return {mixed}
+   */
+  parseArgument(arg) {
+    // if there is a colon, it is a map
+    if (arg.includes(':')) {
+      const pairs = arg.split(',')
+        .map(str => str.split(':'));
+
+      return _.zipObject(pairs.map(pair => pair[0]), pairs.map(pair => pair[1]));
+    }
+
+    // if there is a comma, it is an array
+    if (arg.includes(',')) {
+      return arg.split(',');
+    }
+
+    return arg;
   }
 
   /**

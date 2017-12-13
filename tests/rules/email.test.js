@@ -37,6 +37,6 @@ test('string construction', () => {
 
 test('string construction arguments', () => {
   expect(factory.make('email').useStrict).toBeTruthy();
-  expect(factory.make('email:not-strict').useStrict).toBeFalsy();
-  expect(factory.make('email:strict').useStrict).toBeTruthy();
+  expect(factory.make('email|not-strict').useStrict).toBeFalsy();
+  expect(factory.make('email|strict').useStrict).toBeTruthy();
 });

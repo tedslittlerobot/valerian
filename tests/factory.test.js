@@ -82,7 +82,23 @@ describe('rule factory construction', () => {
       expect(three).toBe('three');
     };
 
-    f.make('foo:one:two:three');
+    f.make('foo|one|two|three');
+  });
+
+  test('list arguments are converted to arrays', () => {
+    const f = new RuleFactory();
+
+    const result = f.parseArgument('one,two,three');
+
+    expect(result).toEqual(['one', 'two', 'three']);
+  });
+
+  test('colonic arguments are converted to maps', () => {
+    const f = new RuleFactory();
+
+    const result = f.parseArgument('one:a,two:b,three:c');
+
+    expect(result).toEqual({ one: 'a', two: 'b', three: 'c' });
   });
 
 });

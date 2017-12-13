@@ -19,8 +19,8 @@ test('one of validation passing', () => {
 });
 
 test('string construction', () => {
-  const rule = factory.make('one_of:foo,bar');
-  const alias = factory.make('in:foo');
+  const rule = factory.make('one_of|foo,bar');
+  const alias = factory.make('in|foo');
 
   expect(rule instanceof OneOf).toBeTruthy();
   expect(alias instanceof OneOf).toBeTruthy();

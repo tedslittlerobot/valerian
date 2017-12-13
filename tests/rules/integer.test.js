@@ -25,10 +25,23 @@ test('integer error messages', () => {
   expect(rule.between(1, 10).error()).toBe('integer/between');
 });
 
-test('string construction', () => {
-  const rule = factory.make('integer');
-  const alias = factory.make('int');
+test('string construction min', () => {
+  const rule = factory.make('integer|min:3');
 
-  expect(rule instanceof Integer).toBeTruthy();
-  expect(alias instanceof Integer).toBeTruthy();
+  expect(rule.rangeMin).toEqual(3);
+  expect(rule.rangeMax).toBe(null);
+});
+
+test('string construction max', () => {
+  const rule = factory.make('integer|max:3');
+
+  expect(rule.rangeMin).toBe(null);
+  expect(rule.rangeMax).toEqual(3);
+});
+
+test('string construction between', () => {
+  const rule = factory.make('integer|between:3-4');
+
+  expect(rule.rangeMin).toEqual(3);
+  expect(rule.rangeMax).toEqual(4);
 });

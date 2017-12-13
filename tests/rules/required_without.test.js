@@ -61,7 +61,7 @@ test('basic required without validation replacements', () => {
 });
 
 test('string construction', () => {
-  const rule = factory.make('required_without:foo');
+  const rule = factory.make('required_without|foo');
 
   expect(rule instanceof RequiredWithout).toBeTruthy();
   expect(rule.other).toBe('foo');

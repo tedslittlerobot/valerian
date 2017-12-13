@@ -23,7 +23,7 @@ test('typeof replacements', () => {
 });
 
 test('string construction', () => {
-  const rule = factory.make('type_of:foo');
+  const rule = factory.make('type_of|foo');
 
   expect(rule instanceof TypeOf).toBeTruthy();
   expect(rule.comparitor).toBe('foo');

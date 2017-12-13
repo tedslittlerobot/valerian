@@ -61,7 +61,7 @@ test('basic required with validation replacements', () => {
 });
 
 test('string construction', () => {
-  const rule = factory.make('required_with:foo');
+  const rule = factory.make('required_with|foo');
 
   expect(rule instanceof RequiredWith).toBeTruthy();
   expect(rule.other).toBe('foo');

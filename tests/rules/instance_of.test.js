@@ -27,7 +27,7 @@ test('instanceof replacements', () => {
 });
 
 test('string construction', () => {
-  const rule = factory.make('instance_of:foo');
+  const rule = factory.make('instance_of|foo');
 
   expect(rule instanceof InstanceOf).toBeTruthy();
   expect(rule.comparitor).toBe('foo');

@@ -47,7 +47,7 @@ test('basic matches validation replacements', () => {
 });
 
 test('string construction', () => {
-  const rule = factory.make('matches:foo');
+  const rule = factory.make('matches|foo');
 
   expect(rule instanceof Matches).toBeTruthy();
   expect(rule.other).toBe('foo');
