@@ -2,6 +2,7 @@
 import Validator from '../src/Validator';
 import ValidationFailure from '../src/ValidationFailure';
 import Required from '../src/rules/Required';
+import Rule from '../src/rules/Rule';
 import Optional from '../src/rules/Optional';
 import IsString from '../src/rules/IsString';
 
@@ -32,6 +33,24 @@ describe('basic validation failure / pass tests', () => {
     const val = new Validator(data, { a_string: [new Required()] });
 
     expect(val.passes()).toBe(true);
+  });
+
+  test('validation results should cache and not run twice', () => {
+    const val = new Validator(data, { a_string: [new Required()] });
+
+    let runCount = 0;
+
+    val.validate = () => {
+      runCount++;
+
+      val.status = true;
+
+      return val
+    };
+
+    expect(val.passes()).toBe(true);
+    expect(val.passes()).toBe(true);
+    expect(runCount).toBe(1);
   });
 
   test('validate some data that fails', () => {

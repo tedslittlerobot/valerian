@@ -127,15 +127,11 @@ export default class Validator {
   checkRuleSet(rulesetToCheck) {
     // ensure it is an array
     let ruleset = (!Array.isArray(rulesetToCheck) ? [rulesetToCheck] : rulesetToCheck)
+      // ensure each rule is a rule
       .map(factory.make);
 
     const has = { required: false, optional: false };
     ruleset.forEach((rule) => {
-      // rules must be rules
-      if (!(rule instanceof Rule)) {
-        throw new Error(`The supplied rule must be an instance of [Rule]. [${rule.constructor.name}] given.`);
-      }
-
       if (rule instanceof Required) {
         has.required = true;
       }
