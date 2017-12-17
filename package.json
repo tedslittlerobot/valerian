@@ -1,6 +1,6 @@
 {
   "name": "valerian",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Easy Full Featured JS Validation Library.",
   "main": "src/index.js",
   "keywords": [

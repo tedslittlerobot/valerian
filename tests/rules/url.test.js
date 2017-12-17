@@ -1,4 +1,6 @@
 
+import '../../bootstrap';
+import { factory } from '../../src/RuleFactory';
 import Url from '../../src/rules/Url';
 
 test('basic url validation failure', () => {
@@ -12,4 +14,10 @@ test('url validation passing', () => {
   const rule = new Url();
 
   expect(rule.validate('http://foo')).toBe(true);
+});
+
+test('string construction', () => {
+  const rule = factory.make('url');
+
+  expect(rule instanceof Url).toBeTruthy();
 });

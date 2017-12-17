@@ -15,20 +15,20 @@ export default class IsString extends Rule {
   }
 
   min(value) {
-    this.rangeMin = value;
+    this.rangeMin = (value !== null) ? Number(value) : null;
 
     return this;
   }
 
   max(value) {
-    this.rangeMax = value;
+    this.rangeMax = (value !== null) ? Number(value) : null;
 
     return this;
   }
 
   between(min, max) {
-    this.rangeMin = min;
-    this.rangeMax = max;
+    this.rangeMin = (min !== null) ? Number(min) : null;
+    this.rangeMax = (max !== null) ? Number(max) : null;
 
     return this;
   }

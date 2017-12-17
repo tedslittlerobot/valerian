@@ -1,4 +1,6 @@
 
+import '../../bootstrap';
+import { factory } from '../../src/RuleFactory';
 import RequiredWithout from '../../src/rules/RequiredWithout';
 
 test('basic required without validation failure', () => {
@@ -56,4 +58,15 @@ test('basic required without validation replacements', () => {
   };
 
   expect(rule.replacements('foo', validator)).toEqual({ other: 'Bar' });
+});
+
+test('string construction', () => {
+  const rule = factory.make('required_without|foo');
+
+  expect(rule instanceof RequiredWithout).toBeTruthy();
+  expect(rule.other).toBe('foo');
+});
+
+test('string construction required arguments', () => {
+  expect(() => factory.make('required_without')).toThrow('Rule [required_without] requires an argument.');
 });

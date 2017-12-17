@@ -2,6 +2,7 @@
 import Validator from '../src/Validator';
 import ValidationFailure from '../src/ValidationFailure';
 import Required from '../src/rules/Required';
+import Rule from '../src/rules/Rule';
 import Optional from '../src/rules/Optional';
 import IsString from '../src/rules/IsString';
 
@@ -32,6 +33,24 @@ describe('basic validation failure / pass tests', () => {
     const val = new Validator(data, { a_string: [new Required()] });
 
     expect(val.passes()).toBe(true);
+  });
+
+  test('validation results should cache and not run twice', () => {
+    const val = new Validator(data, { a_string: [new Required()] });
+
+    let runCount = 0;
+
+    val.validate = () => {
+      runCount++;
+
+      val.status = true;
+
+      return val
+    };
+
+    expect(val.passes()).toBe(true);
+    expect(val.passes()).toBe(true);
+    expect(runCount).toBe(1);
   });
 
   test('validate some data that fails', () => {
@@ -98,7 +117,7 @@ describe('validation ruleset checking', () => {
     const val = new Validator();
     const rule = new Required();
 
-    const result = val.checkRules(rule);
+    const result = val.checkRuleSet(rule);
 
     expect(result).toEqual([rule]);
     expect(result[0]).toBe(rule);
@@ -106,7 +125,7 @@ describe('validation ruleset checking', () => {
 
   test('validate optional rule is implicit', () => {
     const val = new Validator();
-    const result = val.checkRules([]);
+    const result = val.checkRuleSet([]);
 
     expect(result[0] instanceof Optional).toBe(true);
   });
@@ -114,7 +133,7 @@ describe('validation ruleset checking', () => {
   test('validate optional rule can be explicit', () => {
     const val = new Validator();
     const rule = new Optional();
-    const result = val.checkRules([rule]);
+    const result = val.checkRuleSet([rule]);
 
     expect(result).toEqual([rule]);
     expect(result[0]).toBe(rule);
@@ -123,7 +142,7 @@ describe('validation ruleset checking', () => {
   test('validate required does not add implicit optional rule', () => {
     const val = new Validator();
     const rule = new Required();
-    const result = val.checkRules([rule]);
+    const result = val.checkRuleSet([rule]);
 
     expect(result).toEqual([rule]);
     expect(result[0]).toBe(rule);
@@ -132,7 +151,7 @@ describe('validation ruleset checking', () => {
   test('validate only Rule classes are allowed', () => {
     const val = new Validator();
 
-    expect(() => val.checkRules(['monkeys'])).toThrow('The supplied rule must be an instance of [Rule]. [String] given.');
+    expect(() => val.checkRuleSet(['monkeys'])).toThrow('No registered rule factory for rule [monkeys].');
   });
 
 });

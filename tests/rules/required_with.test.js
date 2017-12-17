@@ -1,4 +1,6 @@
 
+import '../../bootstrap';
+import { factory } from '../../src/RuleFactory';
 import RequiredWith from '../../src/rules/RequiredWith';
 
 test('basic required with validation failure', () => {
@@ -56,4 +58,15 @@ test('basic required with validation replacements', () => {
   };
 
   expect(rule.replacements('foo', validator)).toEqual({ other: 'Bar' });
+});
+
+test('string construction', () => {
+  const rule = factory.make('required_with|foo');
+
+  expect(rule instanceof RequiredWith).toBeTruthy();
+  expect(rule.other).toBe('foo');
+});
+
+test('string construction required arguments', () => {
+  expect(() => factory.make('required_with')).toThrow('Rule [required_with] requires an argument.');
 });
