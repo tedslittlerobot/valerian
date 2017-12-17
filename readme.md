@@ -12,10 +12,10 @@ import Validator from 'valerian';
 const data = { name: 'Tony', age: 'Tony', email: 'not an email' };
 
 // 2. Set some rules
-const rules = { 
-  name: [new IsString()],
-  age: [(new Integer()).between(18, 100)],
-  email: [new Email()],
+const rules = {
+  name: ['string'], // rules can use string constructors
+  age: [(new Integer()).between(18, 100)], // or class constructors
+  email: ['required', 'string|min:3', 'email'],
 };
 
 // 3. Make a validator
@@ -53,10 +53,16 @@ The following rules are available
 ```javascript
 import { Numeric } from 'valerian/rules';
 
+// Both numeric and number resolve to this
+const rules = { number: ['numeric', 'number']};
+
 new Numeric();
 
 (new Numeric()).min(1).max(5);
+const rules = { number: ['number|min:1']};
+
 (new Numeric()).between(1, 5);
+const rules = { number: ['number|between:1-5']};
 ```
 
 ### Integer
@@ -64,10 +70,15 @@ new Numeric();
 ```javascript
 import { Integer } from 'valerian/rules';
 
+const rules = { number: ['integer', 'int']};
+
 new Integer();
 
 (new Integer()).min(1).max(5);
+const rules = { number: ['integer|min:1']};
+
 (new Integer()).between(1, 5);
+const rules = { number: ['integer|between:1-5']};
 ```
 
 ### IsString
@@ -75,10 +86,16 @@ new Integer();
 ```javascript
 import { IsString } from 'valerian/rules';
 
+const rules = { value: ['is_string', 'string'] };
+
 new IsString(); // defaults to .min(1)
 
 (new IsString()).min(10).max(50); // set the required string lengths
+const rules = { value: ['string|min:10'] };
+
 (new IsString()).between(10, 50); // shorthand for both
+const rules = { value: ['string|between:10-50'] };
+
 (new IsString()).emptiable(); // sets min length to null
 ```
 
@@ -88,6 +105,8 @@ By default, uses the JS regex from http://emailregex.com/
 
 ```javascript
 import { Email } from 'valerian/rules';
+
+const rules = { value: ['email'] };
 
 new Email();
 
@@ -101,6 +120,8 @@ Must be a valid URL. Very naive regex at the moment.
 ```javascript
 import { Url } from 'valerian/rules';
 
+const rules = { value: ['url'] };
+
 new Url();
 ```
 
@@ -110,6 +131,8 @@ This field must match the field passed in here. For example: `name: [new String(
 
 ```javascript
 import { Matches } from 'valerian/rules';
+
+const rules = { value: ['matches|field_name'] };
 
 new Matches('name');
 ```
@@ -121,6 +144,8 @@ The field must match a field with its own name with _confirmation appended. For 
 ```javascript
 import { Confirmed } from 'valerian/rules';
 
+const rules = { value: ['confirmed'] };
+
 new Confirmed();
 ```
 
@@ -130,6 +155,8 @@ Checks against the typeof operator
 
 ```javascript
 import { TypeOf } from 'valerian/rules';
+
+const rules = { value: ['typeof|string'] };
 
 new TypeOf('string');
 ```
@@ -141,6 +168,8 @@ You must provide a class to check against
 ```javascript
 import { InstanceOf } from 'valerian/rules';
 
+const rules = { value: ['instance_of|classname'] };
+
 new InstanceOf(Date);
 ```
 
@@ -150,6 +179,8 @@ Checks that it is a valid date with Date.parse()
 
 ```javascript
 import { IsDateString } from 'valerian/rules';
+
+const rules = { value: ['is_date_string', 'date_string'] };
 
 new IsDateString();
 ```
@@ -161,6 +192,8 @@ Must be one of the supplied values
 ```javascript
 import { OneOf } from 'valerian/rules';
 
+const rules = { value: ['one_of:1,2,3', 'in:3,4,5'] };
+
 new OneOf(['apple', 'banana']);
 ```
 
@@ -171,6 +204,8 @@ Marks a field as optional. This gets added automatically if you don't have any "
 ```javascript
 import { Optional } from 'valerian/rules';
 
+const rules = { value: ['optional'] };
+
 new Optional();
 ```
 
@@ -178,6 +213,8 @@ new Optional();
 
 ```javascript
 import { Required } from 'valerian/rules';
+
+const rules = { value: ['required'] };
 
 new Required();
 ```
@@ -187,6 +224,8 @@ new Required();
 ```javascript
 import { RequiredWith } from 'valerian/rules';
 
+const rules = { value: ['required_with:fieldname'] };
+
 new RequiredWith('other_field');
 ```
 
@@ -194,6 +233,8 @@ new RequiredWith('other_field');
 
 ```javascript
 import { RequiredWithout } from 'valerian/rules';
+
+const rules = { value: ['required_without'] };
 
 new RequiredWithout('other_field');
 ```
